@@ -1,0 +1,19 @@
+# paketi (svako ih dobije sa npm install)
+node_modules/
+
+# tajne i lokalna podešavanja
+.env
+
+# baza (pravi se iz db/schema.sql i db/seed.js)
+*.db
+*.sqlite
+*.sqlite3
+
+# fajlovi koje korisnici učitaju (od V_13)
+public/uploads/*
+!public/uploads/.gitkeep
+
+# sistemski fajlovi
+.DS_Store
+Thumbs.db
+npm-debug.log*
