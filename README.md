@@ -29,7 +29,14 @@ Spisak svih tagova: kartica **Tags** na GitHub-u.
 2. Raspakujte, otvorite folder u VS Code-u
 3. U terminalu: `npm install`, pa `npm start`
 
-Sa Git-om: `git clone <link>`, pa `git switch -c moj-rad v05`
+Sa Git-om:
+
+```bash
+git clone https://github.com/eldinam/opkn-26-27-biblioteka.git
+cd opkn-26-27-biblioteka
+git switch -c moj-rad v05
+npm install
+```
 
 ## Sedmice
 
