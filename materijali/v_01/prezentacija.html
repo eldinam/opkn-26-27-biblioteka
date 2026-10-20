@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPKN · Vježbe 1</title>
+<link rel="stylesheet" href="../_tema/slides.css">
+<style>
+  .stack { display:flex; flex-wrap:wrap; gap:14px; margin-top:24px; }
+  .stack .tag { font-size:22px; padding:10px 20px; }
+  .url { display:flex; justify-content:center; font-family:var(--mono); font-size:52px; font-variant-ligatures:none; margin:40px 0 0; }
+  .url > span { display:flex; flex-direction:column; align-items:center; }
+  .url > span > i { font-style:normal; padding:0 2px 10px; border-bottom:5px solid currentColor; }
+  .url > span > small { font-family:var(--font); font-size:20px; color:var(--muted); margin-top:12px; }
+  .kv { font-size:26px; line-height:1.9; }
+  .kv b { display:inline-block; min-width:150px; }
+  table.compact td, table.compact th { padding:12px 16px; }
+  .tl { list-style:none; padding:0; border-left:3px solid var(--line); margin-left:8px; }
+  .tl li { position:relative; padding:0 0 22px 34px; margin:0; font-size:24px; line-height:1.4; }
+  .tl li::before { content:''; position:absolute; left:-11px; top:8px; width:16px; height:16px; border-radius:50%; background:var(--accent); border:3px solid var(--paper); }
+  .tl .yr { display:block; font-size:17px; font-weight:700; letter-spacing:.08em; color:var(--accent-2); }
+  .tl .co { font-weight:700; }
+  .tl .ds { display:block; color:var(--muted); font-size:21px; }
+  .tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .tags .tag { font-size:16px; padding:5px 12px; }
+</style>
+</head>
+<body data-title="OPKN · Vježbe 1 · HTTP, Node.js i prvi Express projekat">
+<main class="deck">
+
+<!-- 1 -->
+<section class="slide title">
+  <div class="kicker">Odabrana poglavlja kompjuterskih nauka · Vježbe 1</div>
+  <h1>HTTP, Node.js<br>i prvi Express projekat</h1>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <div class="kicker">O meni</div>
+  <h2 style="margin-bottom:6px">Eldina Delalić</h2>
+  <p class="small muted" style="margin-bottom:30px">Magistar matematike - softversko inženjerstvo · PMF Sarajevo, 2012-2017</p>
+  <div class="row" style="gap:56px">
+    <ul class="tl" style="flex:1.25">
+      <li><span class="yr">2021 · DANAS</span><span class="co">Next IT</span>, Lead Software Engineer
+        <span class="ds">od 2022. za klijenta iz San Francisca: razvoj, serveri (test i produkcija), sigurnost, vođenje projekata</span>
+        <div class="tags"><span class="tag">FastAPI</span><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">Node.js</span></div></li>
+      <li><span class="yr">HERAEUS</span><span class="co">ABAP developer</span>, certifikovani SAP ABAP inženjer</li>
+      <li><span class="yr">2016 · 2021</span><span class="co">SaraSoft</span>, full stack softver inženjer
+        <span class="ds">sistem za kućnu njegu, njemačko tržište · Java, JavaScript (ExtJS)</span></li>
+    </ul>
+    <div style="flex:1">
+      <div class="card">
+        <div class="num">NASTAVA</div>
+        <p style="margin-top:8px">PMF, stručni saradnik od 2020.</p>
+        <div class="tags"><span class="tag blue">Uvod u web programiranje</span><span class="tag blue">Programiranje I</span><span class="tag blue">Razvoj web aplikacija</span><span class="tag blue">Razvoj mobilnih aplikacija</span><span class="tag blue">Dinamički web sistemi</span><span class="tag blue">OPKN</span></div>
+      </div>
+      <div class="card green" style="margin-top:22px">
+        <div class="num">KONTAKT</div>
+        <p style="margin-top:8px"><b>Teams</b> (preporučeno)<br><code>eldina.maslo@gmail.com</code><br>Konsultacije online, po dogovoru</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2b -->
+<section class="slide">
+  <div class="kicker">O predmetu</div>
+  <h2>Druga strana weba</h2>
+  <div class="row grow">
+    <div style="flex:1.3">
+      <svg class="diagram" viewBox="0 0 820 520">
+        <defs><marker id="am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5d6677"/></marker></defs>
+        <!-- prošli semestar -->
+        <rect x="10" y="120" width="250" height="200" rx="20" fill="#f4f1ea" stroke="#e2ddd1" stroke-width="2"/>
+        <text x="135" y="200" text-anchor="middle" font-size="32" font-weight="700" fill="#5d6677">Browser</text>
+        <text x="135" y="240" text-anchor="middle" font-size="20" fill="#5d6677">HTML · CSS · JS</text>
+        <text x="135" y="360" text-anchor="middle" font-size="18" font-weight="700" letter-spacing="2" fill="#9aa1ad">UVOD U WEB</text>
+        <!-- strelice -->
+        <line x1="270" y1="200" x2="420" y2="200" stroke="#5d6677" stroke-width="3" marker-end="url(#am)"/>
+        <line x1="420" y1="245" x2="270" y2="245" stroke="#5d6677" stroke-width="3" marker-end="url(#am)"/>
+        <text x="345" y="185" text-anchor="middle" font-size="18" fill="#5d6677">request</text>
+        <text x="345" y="275" text-anchor="middle" font-size="18" fill="#5d6677">response</text>
+        <!-- ovaj semestar -->
+        <rect x="415" y="20" width="395" height="490" rx="26" fill="none" stroke="#c8743a" stroke-width="3" stroke-dasharray="10 8"/>
+        <text x="612" y="60" text-anchor="middle" font-size="18" font-weight="700" letter-spacing="2" fill="#c8743a">OVAJ SEMESTAR</text>
+        <rect x="440" y="120" width="345" height="200" rx="20" fill="#e8efe9" stroke="#cfdcd2" stroke-width="2"/>
+        <text x="612" y="200" text-anchor="middle" font-size="32" font-weight="700" fill="#2f5d50">Server</text>
+        <text x="612" y="240" text-anchor="middle" font-size="20" fill="#5d6677">Node.js · Express · EJS</text>
+        <line x1="612" y1="322" x2="612" y2="375" stroke="#9a5326" stroke-width="3" marker-start="url(#am)" marker-end="url(#am)"/>
+        <ellipse cx="612" cy="395" rx="130" ry="20" fill="#f7ebe0" stroke="#ecd6c2" stroke-width="2"/>
+        <rect x="482" y="395" width="260" height="70" fill="#f7ebe0"/>
+        <line x1="482" y1="395" x2="482" y2="465" stroke="#ecd6c2" stroke-width="2"/><line x1="742" y1="395" x2="742" y2="465" stroke="#ecd6c2" stroke-width="2"/>
+        <ellipse cx="612" cy="465" rx="130" ry="20" fill="#f7ebe0" stroke="#ecd6c2" stroke-width="2"/>
+        <text x="612" y="440" text-anchor="middle" font-size="22" font-weight="700" fill="#9a5326">SQLite / PostgreSQL</text>
+      </svg>
+    </div>
+    <div class="card green">
+      <div class="num">PROJEKAT SEMESTRA</div>
+      <h3 style="margin-top:10px">Biblioteka</h3>
+      <ul class="small">
+        <li>katalog knjiga i autora, CRUD</li>
+        <li>relaciona baza, pretraga, paginacija</li>
+        <li>sesije, prijava, uloge</li>
+        <li>zaduživanje knjiga, JSON API</li>
+        <li>verzionisanje na Git-u i GitHub-u</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <div class="kicker">Semestar</div>
+  <h2>15 sedmica, jedan projekat</h2>
+  <table class="compact">
+    <tr><th>Sedmice</th><th>Blok</th><th>Sadržaj</th></tr>
+    <tr><td>1 · 2 · 3</td><td><b>Temelji</b></td><td>HTTP, Node moduli, Express rute</td></tr>
+    <tr><td>4 · 5 · 6</td><td><b>Prikaz i forme</b></td><td>EJS, MVC, forme i POST</td></tr>
+    <tr><td>7 · 8 · 9</td><td><b>Podaci</b></td><td>validacija, SQL, CRUD nad bazom, SQL injection</td></tr>
+    <tr><td>10 · 11 · 12</td><td><b>Korisnici</b></td><td>JOIN, sesije, bcrypt, autorizacija</td></tr>
+    <tr><td>13 · 14</td><td><b>Završni sloj</b></td><td>upload, JSON API, sigurnost, Git</td></tr>
+    <tr><td>15</td><td><b>Odbrana</b></td><td>odbrana projekata</td></tr>
+  </table>
+  <p class="small muted" style="margin-top:28px">Termin: demo, zajedničko kodiranje, samostalni zadatak. Svaka sedmica počinje od stanja prethodne.</p>
+  <p class="small" style="margin-top:12px">Kod sa vježbi nakon svake sedmice: <a href="https://github.com/eldinam/opkn-26-27-biblioteka" target="_blank" style="text-decoration:none"><code>github.com/eldinam/opkn-26-27-biblioteka</code></a> · tagovi <code>v01</code>, <code>v02</code>, ...</p>
+</section>
+
+<!-- 4 -->
+<section class="slide section">
+  <div class="big-num">01</div>
+  <div class="kicker">Dio prvi</div>
+  <h1>HTTP</h1>
+</section>
+
+<!-- klijent i server -->
+<section class="slide">
+  <div class="kicker">Klijent i server</div>
+  <h2>Uloge, ne uređaji</h2>
+  <svg class="diagram grow" viewBox="0 0 1380 500">
+    <text x="165" y="18" text-anchor="middle" font-size="18" font-weight="700" letter-spacing="2" fill="#3c5a9a">KLIJENT · ŠALJE ZAHTJEV</text>
+    <text x="1215" y="18" text-anchor="middle" font-size="18" font-weight="700" letter-spacing="2" fill="#2f5d50">SERVER · ČEKA I ODGOVARA</text>
+    <line x1="330" y1="87" x2="640" y2="260" stroke="#c9c3b6" stroke-width="2.5"/>
+    <line x1="330" y1="202" x2="640" y2="260" stroke="#c9c3b6" stroke-width="2.5"/>
+    <line x1="330" y1="317" x2="640" y2="260" stroke="#c9c3b6" stroke-width="2.5"/>
+    <line x1="330" y1="432" x2="640" y2="260" stroke="#c9c3b6" stroke-width="2.5"/>
+    <line x1="740" y1="260" x2="1050" y2="105" stroke="#c9c3b6" stroke-width="2.5"/>
+    <line x1="740" y1="260" x2="1050" y2="255" stroke="#c9c3b6" stroke-width="2.5"/>
+    <line x1="740" y1="260" x2="1050" y2="405" stroke="#c9c3b6" stroke-width="2.5"/>
+    <circle cx="690" cy="260" r="62" fill="#fff" stroke="#c8743a" stroke-width="3"/>
+    <text x="690" y="254" text-anchor="middle" font-size="24" font-weight="800" fill="#c8743a">HTTP</text>
+    <text x="690" y="284" text-anchor="middle" font-size="18" fill="#5d6677">mreža</text>
+    <rect x="0" y="40" width="330" height="95" rx="16" fill="#e6ebf5" stroke="#cfd8ea" stroke-width="2"/>
+    <text x="165.0" y="83.5" text-anchor="middle" font-size="26" font-weight="700" fill="#3c5a9a">Browser</text>
+    <text x="165.0" y="115.5" text-anchor="middle" font-size="19" fill="#5d6677">laptop, desktop</text>
+    <rect x="0" y="155" width="330" height="95" rx="16" fill="#e6ebf5" stroke="#cfd8ea" stroke-width="2"/>
+    <text x="165.0" y="198.5" text-anchor="middle" font-size="26" font-weight="700" fill="#3c5a9a">Mobilna aplikacija</text>
+    <text x="165.0" y="230.5" text-anchor="middle" font-size="19" fill="#5d6677">telefon, tablet</text>
+    <rect x="0" y="270" width="330" height="95" rx="16" fill="#e6ebf5" stroke="#cfd8ea" stroke-width="2"/>
+    <text x="165.0" y="313.5" text-anchor="middle" font-size="26" font-weight="700" fill="#3c5a9a">curl, Postman</text>
+    <text x="165.0" y="345.5" text-anchor="middle" font-size="19" fill="#5d6677">terminal, alati</text>
+    <rect x="0" y="385" width="330" height="95" rx="16" fill="#e6ebf5" stroke="#cfd8ea" stroke-width="2"/>
+    <text x="165.0" y="428.5" text-anchor="middle" font-size="26" font-weight="700" fill="#3c5a9a">Drugi server</text>
+    <text x="165.0" y="460.5" text-anchor="middle" font-size="19" fill="#5d6677">server kao klijent</text>
+    <rect x="1050" y="50" width="330" height="110" rx="16" fill="#e8efe9" stroke="#cfdcd2" stroke-width="2"/>
+    <text x="1215.0" y="101.0" text-anchor="middle" font-size="26" font-weight="700" fill="#2f5d50">Isti računar</text>
+    <text x="1215.0" y="133.0" text-anchor="middle" font-size="19" fill="#5d6677" font-family="JetBrains Mono, monospace">localhost</text>
+    <rect x="1050" y="200" width="330" height="110" rx="16" fill="#e8efe9" stroke="#cfdcd2" stroke-width="2"/>
+    <text x="1215.0" y="251.0" text-anchor="middle" font-size="26" font-weight="700" fill="#2f5d50">Lokalna mreža</text>
+    <text x="1215.0" y="283.0" text-anchor="middle" font-size="19" fill="#5d6677" font-family="JetBrains Mono, monospace">192.168.1.20</text>
+    <rect x="1050" y="350" width="330" height="110" rx="16" fill="#e8efe9" stroke="#cfdcd2" stroke-width="2"/>
+    <text x="1215.0" y="401.0" text-anchor="middle" font-size="26" font-weight="700" fill="#2f5d50">Data centar, cloud</text>
+    <text x="1215.0" y="433.0" text-anchor="middle" font-size="19" fill="#5d6677" font-family="JetBrains Mono, monospace">pmf.unsa.ba</text>
+  </svg>
+  <div class="note green" style="margin-top:10px">Isti računar može biti oboje. Na vježbama vaš laptop pokreće i browser i server.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <div class="kicker">Od adrese do odgovora</div>
+  <h2>Šta se desi poslije Enter</h2>
+  <svg class="diagram grow" viewBox="0 0 1380 460">
+    <defs>
+      <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f5d50"/></marker>
+      <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c8743a"/></marker>
+      <marker id="a0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5d6677"/></marker>
+    </defs>
+    <rect x="10" y="150" width="300" height="200" rx="20" fill="#e6ebf5" stroke="#cfd8ea" stroke-width="2"/>
+    <text x="160" y="235" text-anchor="middle" font-size="32" font-weight="700" fill="#3c5a9a">Klijent</text>
+    <text x="160" y="275" text-anchor="middle" font-size="22" fill="#5d6677">browser, curl, app</text>
+
+    <rect x="540" y="10" width="300" height="110" rx="20" fill="#fff" stroke="#e2ddd1" stroke-width="2"/>
+    <text x="690" y="58" text-anchor="middle" font-size="28" font-weight="700" fill="#1d2433">DNS</text>
+    <text x="690" y="94" text-anchor="middle" font-size="20" font-family="JetBrains Mono, monospace" fill="#5d6677">ime → IP</text>
+    <path d="M250,150 Q300,65 530,65" fill="none" stroke="#5d6677" stroke-width="2.5" stroke-dasharray="7 7" marker-end="url(#a0)"/>
+    <text x="270" y="60" font-size="22" font-weight="600" fill="#5d6677">1</text>
+
+    <rect x="1070" y="150" width="300" height="200" rx="20" fill="#e8efe9" stroke="#cfdcd2" stroke-width="2"/>
+    <text x="1220" y="235" text-anchor="middle" font-size="32" font-weight="700" fill="#2f5d50">Server</text>
+    <text x="1220" y="275" text-anchor="middle" font-size="22" fill="#5d6677">proces na portu</text>
+
+    <line x1="320" y1="190" x2="1060" y2="190" stroke="#5d6677" stroke-width="2.5" stroke-dasharray="7 7" marker-end="url(#a0)"/>
+    <text x="690" y="175" text-anchor="middle" font-size="22" fill="#5d6677">2 · TCP konekcija (+ TLS za https)</text>
+    <line x1="320" y1="250" x2="1060" y2="250" stroke="#2f5d50" stroke-width="4" marker-end="url(#a1)"/>
+    <text x="690" y="238" text-anchor="middle" font-size="24" font-weight="600" fill="#2f5d50">3 · request: GET /knjige</text>
+    <line x1="1060" y1="310" x2="320" y2="310" stroke="#c8743a" stroke-width="4" marker-end="url(#a2)"/>
+    <text x="690" y="345" text-anchor="middle" font-size="24" font-weight="600" fill="#c8743a">4 · response: 200 OK + tijelo</text>
+
+    <text x="690" y="430" text-anchor="middle" font-size="22" fill="#5d6677">Browser zatim šalje nove zahtjeve za svaki CSS, JS i sliku iz HTML-a.</text>
+  </svg>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <div class="kicker">HTTP poruka</div>
+  <h2>Tekst preko TCP-a</h2>
+  <div class="cols-2">
+    <div>
+      <div class="file">request</div>
+<pre><span class="k">GET</span> /knjige?zanr=roman HTTP/1.1
+Host: localhost:3000
+Accept: text/html</pre>
+    </div>
+    <div>
+      <div class="file">response</div>
+<pre>HTTP/1.1 <span class="s">200 OK</span>
+Content-Type: text/html; charset=utf-8
+Content-Length: 1243
+
+&lt;!DOCTYPE html&gt; ...</pre>
+    </div>
+  </div>
+  <div class="kv" style="margin-top:36px">
+    <b>Metode</b><code>GET</code> <code>POST</code> <code>PUT</code> <code>PATCH</code> <code>DELETE</code><br>
+    <b>Statusi</b><code>2xx</code> uspjeh &nbsp; <code>3xx</code> preusmjerenje &nbsp; <code>4xx</code> greška klijenta &nbsp; <code>5xx</code> greška servera
+  </div>
+  <div class="note green" style="margin-top:28px">HTTP je <b>stateless</b>: svaki zahtjev je nezavisan. Kako server ipak „pamti“ korisnika: V_11.</div>
+</section>
+
+<!-- uzivo: devtools -->
+<section class="slide">
+  <div class="kicker">Uživo · F12</div>
+  <h2>DevTools</h2>
+  <div class="cols-2 grow" style="grid-template-rows:auto auto; gap:28px 40px">
+    <div class="card blue">
+      <h3>Network</h3>
+      <ul class="small">
+        <li>svaki zahtjev: metoda, status, tip, vrijeme</li>
+        <li>klik na zahtjev: <b>Headers</b>, <b>Response</b></li>
+        <li>filter <b>Doc</b> i <b>Fetch/XHR</b>, <b>Disable cache</b></li>
+      </ul>
+    </div>
+    <div class="card orange">
+      <h3>Console</h3>
+      <ul class="small">
+        <li>greške JavaScript-a na stranici</li>
+        <li>izvršavanje JS uživo</li>
+      </ul>
+<pre style="font-size:20px; padding:14px 20px; margin-top:12px">fetch(location.href).then(r =&gt; r.status)</pre>
+    </div>
+    <div class="card">
+      <h3>Elements</h3>
+      <ul class="small">
+        <li>HTML kakav je stigao i kakav je sada (DOM)</li>
+        <li>CSS pravila za izabrani element</li>
+      </ul>
+    </div>
+    <div class="card green">
+      <h3>Application</h3>
+      <ul class="small">
+        <li>kolačići i localStorage</li>
+        <li>ovdje ćemo vidjeti sesiju u V_11</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <div class="kicker">URL</div>
+  <h2>Dijelovi adrese</h2>
+  <div class="url">
+    <span style="color:#3c5a9a"><i>http://</i><small>protokol</small></span>
+    <span style="color:#2f5d50"><i>localhost</i><small>host</small></span>
+    <span style="color:#c8743a"><i>:3000</i><small>port</small></span>
+    <span style="color:#1d2433"><i>/knjige/5</i><small>putanja</small></span>
+    <span style="color:#9a5326"><i>?sort=naslov</i><small>query string</small></span>
+  </div>
+  <div class="cols-3" style="margin-top:56px">
+    <div class="card blue">
+      <h3>Protokol</h3>
+      <p class="small">pravila po kojima klijent i server razgovaraju</p>
+      <p class="small" style="margin-top:12px"><code>http</code> otvoren tekst, port 80<br><code>https</code> HTTP kroz TLS, port 443: šifrovano, provjeren server</p>
+    </div>
+    <div class="card green">
+      <h3>Host i port</h3>
+      <p class="small">host: koji računar (ime ili IP)</p>
+      <p class="small" style="margin-top:12px">port: koji program na njemu. Bez porta važi 80 ili 443. Naš server: <code>3000</code></p>
+    </div>
+    <div class="card orange">
+      <h3>Putanja i query</h3>
+      <p class="small">šta tražimo od aplikacije</p>
+      <p class="small" style="margin-top:12px">u Express-u: <code>req.params</code> i <code>req.query</code> (V_03)</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <div class="kicker">Šta server vraća</div>
+  <h2>HTML ili JSON</h2>
+  <div class="cols-2">
+    <div>
+      <span class="tag">SERVER-SIDE RENDERING</span>
+<pre style="margin-top:18px">Content-Type: text/html
+
+&lt;ul&gt;
+  &lt;li&gt;Na Drini ćuprija&lt;/li&gt;
+  &lt;li&gt;Derviš i smrt&lt;/li&gt;
+&lt;/ul&gt;</pre>
+      <p class="small muted" style="margin-top:16px">Server sastavi gotovu stranicu iz šablona i podataka. EJS, V_04 do V_12.</p>
+    </div>
+    <div>
+      <span class="tag blue">API</span>
+<pre style="margin-top:18px">Content-Type: application/json
+
+[
+  { "id": 1, "naslov": "Na Drini ćuprija" },
+  { "id": 2, "naslov": "Derviš i smrt" }
+]</pre>
+      <p class="small muted" style="margin-top:16px">Server vraća podatke, klijent ih prikazuje sam. <code>fetch</code>, V_13.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="slide section">
+  <div class="big-num">02</div>
+  <div class="kicker">Dio drugi</div>
+  <h1>Node.js i npm</h1>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <div class="kicker">Node.js</div>
+  <h2>JavaScript van browsera</h2>
+  <div class="row">
+    <div>
+      <div class="file">zdravo.js</div>
+<pre><span class="k">const</span> ime = <span class="s">'PMF'</span>;
+console.log(<span class="s">`Zdravo, ${ime}!`</span>);</pre>
+<pre class="term" style="margin-top:20px"><span class="p">&gt;</span> node zdravo.js
+Zdravo, PMF!</pre>
+    </div>
+    <div>
+      <p class="small">Isti jezik koji već znate, ali program radi na računaru, a ne u stranici.</p>
+      <table class="compact small" style="margin-top:28px">
+        <tr><th></th><th>Browser</th><th>Node.js</th></tr>
+        <tr><td>pokretanje</td><td><code>&lt;script&gt;</code></td><td><code>node fajl.js</code></td></tr>
+        <tr><td>ima</td><td>stranicu, DOM</td><td>fajlove, mrežu, bazu</td></tr>
+        <tr><td>nema</td><td>pristup disku</td><td><code>document</code>, <code>window</code></td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- node historija -->
+<section class="slide">
+  <div class="kicker">Node.js ukratko</div>
+  <h2>Od 2009. do danas</h2>
+  <svg class="diagram" viewBox="0 0 1380 230">
+    <line x1="115" y1="60" x2="1265" y2="60" stroke="#e2ddd1" stroke-width="4"/>
+    <circle cx="115" cy="60" r="11" fill="#5d6677"/>
+    <text x="115" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#5d6677">1995</text>
+    <text x="115" y="110" text-anchor="middle" font-size="23" font-weight="700" fill="#1d2433">JavaScript</text>
+    <text x="115" y="146" text-anchor="middle" font-size="19" fill="#5d6677">u browseru Netscape-a,</text>
+    <text x="115" y="172" text-anchor="middle" font-size="19" fill="#5d6677">samo za stranice</text>
+    <circle cx="345" cy="60" r="11" fill="#3c5a9a"/>
+    <text x="345" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#3c5a9a">2008</text>
+    <text x="345" y="110" text-anchor="middle" font-size="23" font-weight="700" fill="#1d2433">V8</text>
+    <text x="345" y="146" text-anchor="middle" font-size="19" fill="#5d6677">Google pravi brzi JS</text>
+    <text x="345" y="172" text-anchor="middle" font-size="19" fill="#5d6677">motor za Chrome</text>
+    <circle cx="575" cy="60" r="16" fill="#c8743a"/>
+    <text x="575" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#c8743a">2009</text>
+    <text x="575" y="110" text-anchor="middle" font-size="23" font-weight="800" fill="#1d2433">Node.js</text>
+    <text x="575" y="146" text-anchor="middle" font-size="19" fill="#5d6677">Ryan Dahl izvlači V8</text>
+    <text x="575" y="172" text-anchor="middle" font-size="19" fill="#5d6677">iz browsera na server</text>
+    <circle cx="805" cy="60" r="11" fill="#2f5d50"/>
+    <text x="805" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#2f5d50">2010</text>
+    <text x="805" y="110" text-anchor="middle" font-size="23" font-weight="700" fill="#1d2433">npm i Express</text>
+    <text x="805" y="146" text-anchor="middle" font-size="19" fill="#5d6677">paketi i web framework</text>
+    <circle cx="1035" cy="60" r="11" fill="#2f5d50"/>
+    <text x="1035" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#2f5d50">2015</text>
+    <text x="1035" y="110" text-anchor="middle" font-size="23" font-weight="700" fill="#1d2433">Node.js Foundation</text>
+    <text x="1035" y="146" text-anchor="middle" font-size="19" fill="#5d6677">stabilna LTS izdanja</text>
+    <circle cx="1265" cy="60" r="11" fill="#2f5d50"/>
+    <text x="1265" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#2f5d50">danas</text>
+    <text x="1265" y="110" text-anchor="middle" font-size="23" font-weight="700" fill="#1d2433">OpenJS Foundation</text>
+    <text x="1265" y="146" text-anchor="middle" font-size="19" fill="#5d6677">nova LTS verzija svake</text>
+    <text x="1265" y="172" text-anchor="middle" font-size="19" fill="#5d6677">godine</text>
+  </svg>
+  <div class="cols-2" style="margin-top:40px">
+    <div class="card">
+      <div class="num">PRIJE NODE-A</div>
+      <p class="small" style="margin-top:10px">Server u PHP-u, Javi, C#-u, Ruby-ju ili Pythonu. JavaScript samo u browseru.</p>
+      <p class="small muted">Jedna aplikacija, dva jezika, često i dva tima.</p>
+    </div>
+    <div class="card green">
+      <div class="num">IDEJA</div>
+      <p class="small" style="margin-top:10px">Server koji ne čeka: dok čita disk ili bazu, opslužuje druge zahtjeve.</p>
+      <p class="small muted">Zato podnosi mnogo istovremenih konekcija.</p>
+    </div>
+  </div>
+</section>
+
+<!-- zasto node -->
+<section class="slide">
+  <div class="kicker">Zašto Node.js</div>
+  <h2>Gdje ga srećete</h2>
+  <div class="cols-4" style="margin-top:10px">
+    <div class="card green"><div class="num">JEDAN JEZIK</div><p style="margin-top:10px">JavaScript na frontendu i backendu</p></div>
+    <div class="card blue"><div class="num">NPM</div><p style="margin-top:10px">najveći registar paketa, preko 2 miliona</p></div>
+    <div class="card orange"><div class="num">ANKETE</div><p style="margin-top:10px">godinama među najkorištenijim web tehnologijama (Stack Overflow)</p></div>
+    <div class="card"><div class="num">ALATI</div><p style="margin-top:10px">React, Next.js, Vite, npm rade na Node-u</p></div>
+  </div>
+  <div class="row" style="margin-top:44px; align-items:center">
+    <div>
+      <div class="num" style="font-size:18px;font-weight:700;letter-spacing:.1em;color:var(--accent-2)">KORISTE GA</div>
+      <p style="margin-top:8px">Netflix · PayPal · LinkedIn · Uber · Walmart · NASA</p>
+    </div>
+    <div class="note green">I VS Code u kojem radite je napisan na Node-u (Electron).</div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <div class="kicker">npm</div>
+  <h2>Paketi i package.json</h2>
+  <div class="row">
+    <div>
+      <div class="file">package.json</div>
+<pre>{
+  <span class="s">"name"</span>: <span class="s">"biblioteka"</span>,
+  <span class="s">"scripts"</span>: {
+    <span class="s">"start"</span>: <span class="s">"node ./bin/www"</span>
+  },
+  <span class="s">"dependencies"</span>: {
+    <span class="s">"express"</span>: <span class="s">"~4.16.1"</span>,
+    <span class="s">"ejs"</span>: <span class="s">"~2.6.1"</span>
+  }
+}</pre>
+    </div>
+    <div>
+<pre class="term"><span class="p">&gt;</span> npm install   <span class="c"># preuzmi sve sa spiska</span>
+<span class="p">&gt;</span> npm start     <span class="c"># pokreni skriptu "start"</span></pre>
+      <ul class="small" style="margin-top:28px">
+        <li><code>dependencies</code>: spisak paketa koje projekat koristi</li>
+        <li><code>scripts</code>: prečice za komande</li>
+        <li><code>node_modules/</code>: preuzeti paketi, ne šalje se nikome</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide section">
+  <div class="big-num">03</div>
+  <div class="kicker">Dio treći</div>
+  <h1>Projekat Biblioteka</h1>
+</section>
+
+<!-- priprema node -->
+<section class="slide">
+  <div class="kicker">Priprema</div>
+  <h2>Node.js na vašem računaru</h2>
+  <div class="cols-3">
+    <div class="card">
+      <div class="num">1 · PROVJERA</div>
+<pre class="term" style="margin-top:14px; font-size:22px"><span class="p">&gt;</span> node -v
+v22.14.0</pre>
+      <p class="small" style="margin-top:14px">Treba <b>22 ili novija</b>.</p>
+      <p class="small muted">Starija verzija ili greška: korak 2.</p>
+    </div>
+    <div class="card green">
+      <div class="num">2 · INSTALACIJA / NOVA VERZIJA</div>
+      <p class="small" style="margin-top:14px"><code>nodejs.org</code> → <b>LTS</b> → instalirati preko stare verzije</p>
+      <p class="small muted" style="margin-top:12px">ili iz terminala:</p>
+<pre class="term" style="margin-top:8px; font-size:18px"><span class="c"># Windows</span>
+<span class="p">&gt;</span> winget install OpenJS.NodeJS.LTS
+<span class="c"># macOS</span>
+<span class="p">&gt;</span> brew install node</pre>
+    </div>
+    <div class="card blue">
+      <div class="num">3 · PONOVO OTVORITI</div>
+      <p class="small" style="margin-top:14px">Zatvoriti <b>sve</b> terminale i VS Code, otvoriti ponovo, pa <code>node -v</code>.</p>
+      <p class="small muted" style="margin-top:12px">Stari terminal i dalje vidi staru verziju.</p>
+    </div>
+  </div>
+  <p class="small muted" style="margin-top:30px">Više verzija na istom računaru: <code>nvm-windows</code> ili <code>nvm</code>. Detalji: <code>uputstvo_instalacija.md</code></p>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <div class="kicker">Pokretanje</div>
+  <h2>Od nule do localhost:3000</h2>
+  <div class="row">
+<pre class="term" style="flex:1.25"><span class="p">&gt;</span> npx express-generator --view=ejs biblioteka
+<span class="p">&gt;</span> cd biblioteka
+<span class="p">&gt;</span> npm install
+<span class="p">&gt;</span> npm start
+
+GET / <span class="s">200</span> 9.412 ms - 207
+GET /stylesheets/style.css <span class="s">200</span></pre>
+    <div>
+      <div class="note small">Generator koristi stare verzije paketa, pa <code>npm install</code> prijavi ranjivosti. Ažuriramo u V_02.</div>
+      <div class="note green small" style="margin-top:20px">Logove ispisuje <code>morgan</code>: metoda, putanja, status, vrijeme. <code>Ctrl + C</code> gasi server.</div>
+      <p class="small muted" style="margin-top:20px">Instalacija alata: <code>uputstvo_instalacija.md</code></p>
+    </div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <div class="kicker">Struktura</div>
+  <h2>Šta je generator napravio</h2>
+  <div class="row">
+<pre style="flex:.9; font-size:24px">biblioteka/
+├── <span class="k">bin/www</span>          <span class="c">kreira HTTP server</span>
+├── <span class="k">app.js</span>           <span class="c">middleware i rute</span>
+├── package.json
+├── <span class="s">public/</span>          <span class="c">statički fajlovi</span>
+│   └── stylesheets/style.css
+├── <span class="s">routes/</span>
+│   ├── index.js
+│   └── users.js
+└── <span class="s">views/</span>
+    ├── index.ejs
+    └── error.ejs</pre>
+    <div class="small">
+      <p>Danas mijenjamo:</p>
+      <ul>
+        <li><code>routes/index.js</code></li>
+        <li><code>views/index.ejs</code></li>
+        <li><code>public/stylesheets/style.css</code></li>
+      </ul>
+      <p class="muted" style="margin-top:18px"><code>app.js</code> i <code>bin/www</code> detaljno u V_02.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <div class="kicker">Express i EJS</div>
+  <h2>Ruta poziva šablon</h2>
+  <div class="cols-2">
+    <div>
+      <div class="file">routes/index.js</div>
+<pre>router.<span class="k">get</span>(<span class="s">'/'</span>, (req, res) =&gt; {
+  res.render(<span class="s">'index'</span>, {
+    title: <span class="s">'Biblioteka'</span>
+  });
+});</pre>
+      <p class="small muted" style="margin-top:18px">Express: metoda + putanja → funkcija <code>(req, res)</code>.</p>
+    </div>
+    <div>
+      <div class="file">views/index.ejs</div>
+<pre>&lt;h1&gt;<span class="t">&lt;%= title %&gt;</span>&lt;/h1&gt;</pre>
+      <div class="file" style="margin-top:24px">HTML koji ode klijentu</div>
+<pre>&lt;h1&gt;Biblioteka&lt;/h1&gt;</pre>
+      <p class="small muted" style="margin-top:18px">EJS: HTML sa JavaScript izrazima, izvršava se na serveru.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <div class="kicker">Arhitektura generisane aplikacije</div>
+  <h2>Put zahtjeva</h2>
+  <svg class="diagram grow" viewBox="0 0 1380 400">
+    <defs><marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f5d50"/></marker></defs>
+    <g font-size="22">
+      <rect x="0" y="40" width="230" height="130" rx="18" fill="#e6ebf5" stroke="#cfd8ea" stroke-width="2"/>
+      <text x="115" y="95" text-anchor="middle" font-weight="700" font-size="26" fill="#3c5a9a">Klijent</text>
+      <text x="115" y="132" text-anchor="middle" font-family="JetBrains Mono, monospace" fill="#5d6677">GET /</text>
+
+      <rect x="290" y="40" width="230" height="130" rx="18" fill="#fff" stroke="#e2ddd1" stroke-width="2"/>
+      <text x="405" y="95" text-anchor="middle" font-weight="700" font-size="26">bin/www</text>
+      <text x="405" y="132" text-anchor="middle" fill="#5d6677">HTTP server :3000</text>
+
+      <rect x="580" y="40" width="230" height="130" rx="18" fill="#fff" stroke="#e2ddd1" stroke-width="2"/>
+      <text x="695" y="95" text-anchor="middle" font-weight="700" font-size="26">app.js</text>
+      <text x="695" y="132" text-anchor="middle" fill="#5d6677">middleware lanac</text>
+
+      <rect x="870" y="40" width="230" height="130" rx="18" fill="#e8efe9" stroke="#cfdcd2" stroke-width="2"/>
+      <text x="985" y="95" text-anchor="middle" font-weight="700" font-size="26" fill="#2f5d50">routes/</text>
+      <text x="985" y="132" text-anchor="middle" fill="#5d6677">handler</text>
+
+      <rect x="1150" y="40" width="230" height="130" rx="18" fill="#f7ebe0" stroke="#ecd6c2" stroke-width="2"/>
+      <text x="1265" y="95" text-anchor="middle" font-weight="700" font-size="26" fill="#9a5326">views/</text>
+      <text x="1265" y="132" text-anchor="middle" fill="#5d6677">EJS → HTML</text>
+
+      <line x1="232" y1="105" x2="284" y2="105" stroke="#2f5d50" stroke-width="3" marker-end="url(#a4)"/>
+      <line x1="522" y1="105" x2="574" y2="105" stroke="#2f5d50" stroke-width="3" marker-end="url(#a4)"/>
+      <line x1="812" y1="105" x2="864" y2="105" stroke="#2f5d50" stroke-width="3" marker-end="url(#a4)"/>
+      <line x1="1102" y1="105" x2="1144" y2="105" stroke="#2f5d50" stroke-width="3" marker-end="url(#a4)"/>
+      <path d="M1265,175 L1265,260 L115,260 L115,182" fill="none" stroke="#c8743a" stroke-width="3" stroke-dasharray="9 7" marker-end="url(#a4)"/>
+      <text x="690" y="295" text-anchor="middle" font-size="24" font-weight="600" fill="#c8743a">response</text>
+    </g>
+    <text x="690" y="365" text-anchor="middle" font-size="22" fill="#5d6677"><tspan font-family="JetBrains Mono, monospace">public/</tspan> poslužuje express.static direktno, bez rute.</text>
+  </svg>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <div class="kicker">Prva izmjena</div>
+  <h2>Naslov iz rute</h2>
+  <div class="cols-2">
+    <div>
+      <div class="file">routes/index.js</div>
+<pre>router.get(<span class="s">'/'</span>, <span class="k">function</span>(req, res, next) {
+  res.render(<span class="s">'index'</span>, { title: <span class="s">'Biblioteka PMF'</span> });
+});</pre>
+      <div class="file" style="margin-top:20px">views/index.ejs</div>
+<pre>&lt;h1&gt;<span class="t">&lt;%= title %&gt;</span>&lt;/h1&gt;
+&lt;p&gt;Katalog knjiga.&lt;/p&gt;</pre>
+    </div>
+    <div>
+      <table class="compact small">
+        <tr><th>Izmjena u</th><th>Treba</th></tr>
+        <tr><td><code>.js</code></td><td>restart servera</td></tr>
+        <tr><td><code>.ejs</code>, <code>.css</code></td><td>samo F5</td></tr>
+      </table>
+      <p class="small muted" style="margin-top:24px">Šablon se čita pri svakom renderu, a JS modul samo pri pokretanju. Automatski restart: <code>nodemon</code>, V_02.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 18 -->
+<section class="slide">
+  <div class="kicker">Greške</div>
+  <h2>Najčešće na početku</h2>
+  <table class="compact small">
+    <tr><th>Poruka</th><th>Uzrok</th></tr>
+    <tr><td><code>Cannot find module 'express'</code></td><td>nije pokrenut <code>npm install</code></td></tr>
+    <tr><td><code>ENOENT ... package.json</code></td><td>terminal nije u folderu projekta</td></tr>
+    <tr><td><code>EADDRINUSE :::3000</code></td><td>port zauzima drugi proces (server već radi)</td></tr>
+    <tr><td><code>ERR_CONNECTION_REFUSED</code></td><td>server nije pokrenut ili je pao</td></tr>
+  </table>
+  <p class="small muted" style="margin-top:28px">Stack trace je u terminalu servera. Šta je stiglo do klijenta: DevTools → Network.</p>
+</section>
+
+<!-- 19 -->
+<section class="slide">
+  <div class="kicker">Zadatak 1</div>
+  <h2>Vlastita početna stranica</h2>
+  <div class="cols-2">
+    <ol class="steps small">
+      <li>Generisati i pokrenuti <code>biblioteka</code></li>
+      <li>Naslov <code>Biblioteka PMF</code> iz rute</li>
+      <li><code>index.ejs</code>: <code>meta charset</code>, opis, lista 3 knjige sa autorima</li>
+      <li><code>style.css</code>: font, boje, širina, razmaci</li>
+    </ol>
+    <div>
+      <div class="card orange">
+        <div class="num">BONUS</div>
+        <p>Proslijediti <code>autor</code> iz rute i ispisati ga u podnožju sa <code>&lt;%= autor %&gt;</code>.</p>
+      </div>
+      <p class="small muted" style="margin-top:24px">Detalji: <code>zadatak_01.md</code>. Projekat čuvate, V_02 nastavlja na njemu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 20 -->
+<section class="slide title">
+  <div class="kicker">Sljedeće · V_02</div>
+  <h1>Node.js iznutra</h1>
+  <p class="lead">Moduli, <code style="background:rgba(255,255,255,.15);color:#fff">http</code> server bez Express-a, <code style="background:rgba(255,255,255,.15);color:#fff">package.json</code> i nodemon.</p>
+</section>
+
+</main>
+<script src="../_tema/slides.js"></script>
+</body>
+</html>
