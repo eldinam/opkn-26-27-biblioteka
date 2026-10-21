@@ -6,3 +6,16 @@ body {
 a {
   color: #00B7FF;
 }
+
+.datum {
+  color: #777;
+  margin-top: -10px;
+}
+
+.kartica {
+  background: #f4f1ea;
+  border-left: 4px solid #c8743a;
+  padding: 12px 20px;
+  max-width: 600px;
+  margin-bottom: 16px;
+}

@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <meta charset='utf-8' />
+    <title><%= naslov %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <h1><%= naslov %></h1>
+    <p class="datum"><%= datum %></p>
+    <p>Katalog knjiga naše biblioteke.</p>
+
+    <section class="kartica">
+      <h2>Zanimljivost dana</h2>
+      <p><%= zanimljivost %></p>
+    </section>
   </body>
 </html>
