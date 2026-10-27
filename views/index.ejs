@@ -8,7 +8,13 @@
   <body>
     <h1><%= naslov %></h1>
     <p class="datum"><%= datum %></p>
-    <p>Katalog knjiga naše biblioteke.</p>
+    <p>Katalog knjiga naše biblioteke. U biblioteci je trenutno <strong><%= brojKnjiga %></strong> knjiga.</p>
+
+    <section class="kartica">
+      <h2>Preporuka dana</h2>
+      <p><strong><%= preporuka.naslov %></strong>, <%= preporuka.autor %> (<%= preporuka.godina %>)</p>
+      <p class="datum">Od izdanja je prošlo <%= prijeGodina %> god.</p>
+    </section>
 
     <section class="kartica">
       <h2>Zanimljivost dana</h2>

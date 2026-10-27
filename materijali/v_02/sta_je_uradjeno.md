@@ -1,6 +1,6 @@
 # V_02 · Šta je urađeno u projektu
 
-Stanje: tag `v02-cas` (kod sa časa).
+Stanje: tag `v02` (kod sa časa i rješenje zadatka 2).
 
 ## Promjene
 
@@ -11,6 +11,16 @@ Stanje: tag `v02-cas` (kod sa časa).
 | `routes/index.js` | uvozi `dayjs` i `data/zanimljivosti`; šablonu šalje naslov, današnji datum i nasumičnu zanimljivost |
 | `views/index.ejs` | `meta charset`, naslov „Biblioteka PMF“, datum, kartica „Zanimljivost dana“ |
 | `public/stylesheets/style.css` | stil za datum i karticu |
+
+## Rješenje zadatka 2
+
+| Fajl | Šta je dodano |
+|---|---|
+| `data/knjige.js` | **novo:** modul sa nizom od 5 knjiga (`id`, `naslov`, `autor`, `godina`, `zanr`) |
+| `routes/index.js` | uvozi `data/knjige`; funkcija `nasumicno(niz)` vraća nasumičan element bilo kojeg niza i koristi se i za zanimljivost i za preporuku; šablonu šalje `brojKnjiga`, `preporuka` i `prijeGodina` |
+| `views/index.ejs` | broj knjiga u opisu i kartica „Preporuka dana“ (naslov, autor, godina, koliko je godina prošlo od izdanja) |
+
+Broj knjiga je `knjige.length`, pa se sam mijenja kad dodate ili obrišete knjigu. Godine od izdanja (bonus): `dayjs().year() - preporuka.godina`.
 
 ## Šta smo naučili
 
@@ -32,4 +42,4 @@ http://localhost:3000
 
 ## Sljedeće
 
-Zadatak 2: `zadatak_02.md` u ovom folderu. V_03: Express rute, stranica za svaku knjigu (`/knjige/:id`).
+V_03: Express rute, stranica za svaku knjigu (`/knjige/:id`).
