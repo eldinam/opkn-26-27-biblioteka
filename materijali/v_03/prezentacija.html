@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPKN · Vježbe 3</title>
+<link rel="stylesheet" href="../_tema/slides.css">
+<style>
+  .halves { display:grid; grid-template-columns:1fr 1fr; gap:32px; margin-top:20px; }
+  .halves .card { padding:34px 36px; }
+  .halves .big { font-size:22px; font-weight:800; letter-spacing:.12em; color:var(--accent-2); }
+  .kviz { display:flex; flex-direction:column; justify-content:center; }
+  .kviz .q { font-family:var(--mono); font-size:46px; background:#fff; border:1px solid var(--line); border-radius:18px; padding:30px 40px; margin:10px 0 36px; }
+  .opts { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .opts .card { font-size:26px; padding:28px; }
+  .opts .card b { display:block; font-size:34px; color:var(--accent-2); margin-bottom:6px; }
+  .routes { font-family:var(--mono); font-size:24px; }
+  .routes div { padding:14px 20px; border:1px solid var(--line); border-radius:12px; margin-bottom:10px; background:#fff; display:flex; justify-content:space-between; }
+  .routes .hit { border-color:var(--accent-2); background:var(--soft-2); }
+  .routes .miss { opacity:.45; }
+  .routes small { font-family:var(--font); font-size:19px; color:var(--muted); }
+  pre.sm { font-size:21px; }
+  pre.xs { font-size:19px; }
+  .levels td:first-child { font-weight:800; color:var(--accent-2); width:110px; }
+</style>
+</head>
+<body data-title="OPKN · Vježbe 3 · Rute">
+<main class="deck">
+
+<!-- 1 -->
+<section class="slide title">
+  <div class="kicker">Odabrana poglavlja kompjuterskih nauka · Vježbe 3</div>
+  <h1>Rute</h1>
+  <p class="lead">Kako adresa u browseru pronađe pravi kod.</p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <div class="kicker">Danas</div>
+  <h2>Prvi sat ja, drugi sat vi</h2>
+  <div class="halves">
+    <div class="card blue">
+      <div class="big">PRVI SAT</div>
+      <ul class="small" style="margin-top:14px">
+        <li>šta je ruta</li>
+        <li>statične i dinamičke rute</li>
+        <li>zašto je redoslijed bitan</li>
+        <li>nova biblioteka: <code>slugify</code></li>
+      </ul>
+    </div>
+    <div class="card green">
+      <div class="big">DRUGI SAT</div>
+      <ul class="small" style="margin-top:14px">
+        <li>zadatak u 4 nivoa</li>
+        <li>svako ide koliko stigne</li>
+        <li>na kraju zajedno prolazimo rješenje</li>
+      </ul>
+    </div>
+  </div>
+  <p class="small muted" style="margin-top:30px">Usput par kvizova: pogađate, pa provjeravamo u browseru.</p>
+</section>
+
+<!-- 3 -->
+<section class="slide section">
+  <div class="big-num">01</div>
+  <div class="kicker">Dio prvi</div>
+  <h1>Šta je ruta?</h1>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <div class="kicker">Ruta</div>
+  <h2>Metoda + putanja → funkcija</h2>
+  <svg class="diagram grow" viewBox="0 0 1380 430">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f5d50"/></marker></defs>
+    <g font-size="22">
+      <text x="690" y="40" text-anchor="middle" font-size="40" font-family="JetBrains Mono, monospace"><tspan fill="#3c5a9a" font-weight="700">GET</tspan> <tspan fill="#2f5d50" font-weight="700">/knjige</tspan><tspan fill="#c8743a" font-weight="700">/3</tspan></text>
+
+      <rect x="80" y="110" width="520" height="150" rx="18" fill="#fff" stroke="#e2ddd1" stroke-width="2"/>
+      <text x="340" y="155" text-anchor="middle" font-weight="700" font-size="24" font-family="JetBrains Mono, monospace">app.js</text>
+      <text x="340" y="200" text-anchor="middle" font-family="JetBrains Mono, monospace" fill="#2f5d50">app.use('/knjige', knjigeRouter)</text>
+      <text x="340" y="236" text-anchor="middle" fill="#5d6677">„sve što počinje sa /knjige ide u knjige.js“</text>
+
+      <rect x="780" y="110" width="520" height="150" rx="18" fill="#e8efe9" stroke="#cfdcd2" stroke-width="2"/>
+      <text x="1040" y="155" text-anchor="middle" font-weight="700" font-size="24" font-family="JetBrains Mono, monospace" fill="#2f5d50">routes/knjige.js</text>
+      <text x="1040" y="200" text-anchor="middle" font-family="JetBrains Mono, monospace" fill="#c8743a">router.get('/:id', ...)</text>
+      <text x="1040" y="236" text-anchor="middle" fill="#5d6677">„ostatak /3 odgovara ovoj ruti“</text>
+
+      <line x1="605" y1="185" x2="772" y2="185" stroke="#2f5d50" stroke-width="3" marker-end="url(#ar)"/>
+      <line x1="1040" y1="265" x2="1040" y2="318" stroke="#2f5d50" stroke-width="3" marker-end="url(#ar)"/>
+
+      <rect x="780" y="325" width="520" height="80" rx="18" fill="#f7ebe0" stroke="#ecd6c2" stroke-width="2"/>
+      <text x="1040" y="373" text-anchor="middle" font-family="JetBrains Mono, monospace" fill="#9a5326">res.json(knjiga)  →  odgovor</text>
+    </g>
+  </svg>
+</section>
+
+<!-- 5 -->
+<section class="slide kviz">
+  <div class="kicker">Kviz 1</div>
+  <h2>Šta sada vraća ova adresa?</h2>
+  <div class="q">localhost:3000/knjige</div>
+  <div class="opts">
+    <div class="card"><b>A</b>spisak knjiga</div>
+    <div class="card"><b>B</b>početnu stranicu</div>
+    <div class="card"><b>C</b>404</div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide section">
+  <div class="big-num">02</div>
+  <div class="kicker">Dio drugi</div>
+  <h1>Prve rute</h1>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <div class="kicker">Prva ruta</div>
+  <h2>Novi fajl i dvije linije u app.js</h2>
+  <div class="cols-2">
+    <div>
+      <div class="file">routes/knjige.js</div>
+<pre class="sm"><span class="k">const</span> express = require(<span class="s">"express"</span>);
+<span class="k">const</span> knjige = require(<span class="s">"../data/knjige"</span>);
+
+<span class="k">const</span> router = express.Router();
+
+router.get(<span class="s">"/"</span>, <span class="k">function</span> (req, res) {
+  res.json(knjige);
+});
+
+module.exports = router;</pre>
+    </div>
+    <div>
+      <div class="file">app.js</div>
+<pre class="sm"><span class="k">var</span> knjigeRouter = require(<span class="s">'./routes/knjige'</span>);
+
+<span class="c">// ...</span>
+app.use(<span class="s">'/knjige'</span>, knjigeRouter);</pre>
+      <p class="small muted" style="margin-top:20px"><code>"/"</code> u routeru znači „tačno <code>/knjige</code>“, jer je <code>/knjige</code> već dodan u <code>app.js</code>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <div class="kicker">Odgovor</div>
+  <h2>Šta ruta može vratiti</h2>
+  <table class="compact">
+    <tr><th>Metoda</th><th>Šta šalje</th><th>Content-Type</th></tr>
+    <tr><td><code>res.json(objekat)</code></td><td>podatke kao JSON</td><td><code>application/json</code></td></tr>
+    <tr><td><code>res.send("tekst")</code></td><td>tekst ili HTML</td><td><code>text/html</code></td></tr>
+    <tr><td><code>res.render("index", {...})</code></td><td>stranicu iz EJS šablona</td><td><code>text/html</code></td></tr>
+    <tr><td><code>res.status(404).json(...)</code></td><td>isto, ali sa drugim status kodom</td><td></td></tr>
+    <tr><td><code>res.redirect("/knjige")</code></td><td>preusmjerenje (302)</td><td></td></tr>
+  </table>
+  <p class="small muted" style="margin-top:24px">Provjera: F12 → Network → klik na zahtjev → Headers.</p>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="kicker">Statične rute</div>
+  <h2>Putanja je uvijek ista</h2>
+<pre class="sm"><span class="c">// GET /knjige/broj</span>
+router.get(<span class="s">"/broj"</span>, <span class="k">function</span> (req, res) {
+  res.json({ broj: knjige.length });
+});
+
+<span class="c">// GET /knjige/nasumicna</span>
+router.get(<span class="s">"/nasumicna"</span>, <span class="k">function</span> (req, res) {
+  <span class="k">const</span> indeks = Math.floor(Math.random() * knjige.length);
+  res.json(knjige[indeks]);
+});</pre>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <div class="kicker">Dinamičke rute</div>
+  <h2>Dio putanje je varijabla</h2>
+  <div class="row">
+<pre class="sm" style="flex:1.4"><span class="c">// GET /knjige/3, /knjige/5, /knjige/99 ...</span>
+router.get(<span class="s">"/:id"</span>, <span class="k">function</span> (req, res) {
+  <span class="k">const</span> id = Number(req.params.id);
+  <span class="k">const</span> knjiga = knjige.find((k) =&gt; k.id === id);
+
+  <span class="k">if</span> (!knjiga) {
+    <span class="k">return</span> res.status(<span class="s">404</span>).json({
+      greska: <span class="s">`Knjiga ${req.params.id} ne postoji`</span> });
+  }
+  res.json(knjiga);
+});</pre>
+    <div class="small">
+      <table class="compact">
+        <tr><th>Adresa</th><th><code>req.params.id</code></th></tr>
+        <tr><td><code>/knjige/3</code></td><td><code>"3"</code></td></tr>
+        <tr><td><code>/knjige/99</code></td><td><code>"99"</code></td></tr>
+        <tr><td><code>/knjige/abc</code></td><td><code>"abc"</code></td></tr>
+      </table>
+      <p class="muted" style="margin-top:16px">Uvijek <b>string</b>, zato <code>Number(...)</code>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide kviz">
+  <div class="kicker">Kviz 2</div>
+  <h2>Šta vraća ova adresa?</h2>
+  <div class="q">localhost:3000/knjige/abc</div>
+  <div class="opts">
+    <div class="card"><b>A</b>grešku servera (500)</div>
+    <div class="card"><b>B</b>„Knjiga abc ne postoji“ (404)</div>
+    <div class="card"><b>C</b>sve knjige</div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <div class="kicker">Kviz 3 · Redoslijed</div>
+  <h2>Šta sada vraća /knjige/nasumicna?</h2>
+  <div class="row" style="align-items:center">
+    <div class="routes" style="flex:1.2">
+      <div><span>router.get("/")</span><small>1.</small></div>
+      <div class="hit"><span>router.get("/:id")</span><small>2. premjestili smo je gore</small></div>
+      <div><span>router.get("/broj")</span><small>3.</small></div>
+      <div><span>router.get("/nasumicna")</span><small>4.</small></div>
+    </div>
+    <div class="small">
+      <p>Express provjerava rute <b>odozgo prema dolje</b> i staje kod <b>prve</b> koja odgovara.</p>
+      <p class="muted" style="margin-top:16px">Pogađajte, pa provjeravamo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <div class="kicker">Pravilo</div>
+  <h2>Statične prije dinamičkih</h2>
+  <div class="row" style="align-items:center">
+    <div class="routes" style="flex:1.2">
+      <div class="miss"><span>router.get("/")</span><small></small></div>
+      <div class="miss"><span>router.get("/broj")</span><small></small></div>
+      <div class="hit"><span>router.get("/nasumicna")</span><small>✓ odgovara</small></div>
+      <div class="miss"><span>router.get("/naslov/:slug")</span><small></small></div>
+      <div class="miss"><span>router.get("/:id")</span><small>na kraju</small></div>
+    </div>
+    <div class="small">
+      <p><code>/:id</code> hvata <b>bilo šta</b> u jednom dijelu putanje: i <code>3</code>, i <code>nasumicna</code>, i <code>abc</code>.</p>
+      <p class="muted" style="margin-top:16px">Ali samo jedan dio: <code>/naslov/tvrdjava</code> ima dva dijela, pa ga <code>/:id</code> ne hvata.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide section">
+  <div class="big-num">03</div>
+  <div class="kicker">Dio treći</div>
+  <h1>Nova biblioteka: slugify</h1>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <div class="kicker">Slug</div>
+  <h2>Lijepa adresa umjesto broja</h2>
+  <table class="compact">
+    <tr><th>Naslov</th><th>U adresi bez sluga</th><th>Slug</th></tr>
+    <tr><td>Derviš i smrt</td><td><code>Dervi%C5%A1%20i%20smrt</code></td><td><code>dervis-i-smrt</code></td></tr>
+    <tr><td>Na Drini ćuprija</td><td><code>Na%20Drini%20%C4%87uprija</code></td><td><code>na-drini-cuprija</code></td></tr>
+    <tr><td>Tvrđava</td><td><code>Tvr%C4%91ava</code></td><td><code>tvrdjava</code></td></tr>
+  </table>
+  <div class="cols-2" style="margin-top:30px">
+    <div class="note green"><b>Slug</b>: mala slova, bez razmaka i bez č, ć, š, ž, đ. Riječi spojene crticom.</div>
+    <div class="note">Isto rade pravi sajtovi: <code>/vijesti/novi-most-u-sarajevu</code>, a ne <code>/vijesti/48213</code>.</div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <div class="kicker">Kod</div>
+  <h2>Ruta /knjige/naslov/:slug</h2>
+  <div class="row">
+<pre class="xs" style="flex:1.5"><span class="k">const</span> slugify = require(<span class="s">"slugify"</span>);
+
+<span class="k">function</span> napraviSlug(naslov) {
+  <span class="k">return</span> slugify(naslov, { lower: <span class="k">true</span>, strict: <span class="k">true</span> });
+}
+
+<span class="c">// GET /knjige/naslov/dervis-i-smrt</span>
+router.get(<span class="s">"/naslov/:slug"</span>, <span class="k">function</span> (req, res) {
+  <span class="k">const</span> knjiga = knjige.find(
+    (k) =&gt; napraviSlug(k.naslov) === req.params.slug);
+
+  <span class="k">if</span> (!knjiga) {
+    <span class="k">return</span> res.status(<span class="s">404</span>).json({ greska: <span class="s">"Nema"</span> });
+  }
+  res.json(knjiga);
+});</pre>
+    <div>
+<pre class="term xs"><span class="p">&gt;</span> npm install slugify</pre>
+      <ol class="steps small" style="margin-top:20px">
+        <li>iz adrese: <code>"dervis-i-smrt"</code></li>
+        <li>za svaku knjigu napravi slug naslova</li>
+        <li>vrati onu čiji se slug poklapa</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="slide section">
+  <div class="big-num">04</div>
+  <div class="kicker">Dio četvrti</div>
+  <h1>Vaš red</h1>
+</section>
+
+<!-- 18 -->
+<section class="slide">
+  <div class="kicker">Zadatak 3</div>
+  <h2>Četiri nivoa</h2>
+  <table class="compact levels">
+    <tr><th>Nivo</th><th>Adresa</th><th>Vraća</th></tr>
+    <tr><td>1</td><td><code>/knjige/autori</code></td><td>spisak autora, bez ponavljanja</td></tr>
+    <tr><td>2</td><td><code>/knjige/zanr/roman</code></td><td>knjige tog žanra, a 404 ako nema nijedne</td></tr>
+    <tr><td>3</td><td><code>/knjige?od=1950&amp;do=1970</code></td><td>knjige objavljene u tom periodu</td></tr>
+    <tr><td>4</td><td><code>/knjige/statistika</code></td><td>broj knjiga po žanru: <code>{ "roman": 3, "novela": 1 }</code></td></tr>
+    <tr><td>Bonus</td><td><code>/knjige/nasumicna/3</code></td><td>toliko različitih nasumičnih knjiga, 400 ako broj nije ispravan</td></tr>
+  </table>
+  <p class="small muted" style="margin-top:20px">Sve u <code>routes/knjige.js</code>. Detalji: <code>materijali/v_03/zadatak_03.md</code></p>
+</section>
+
+<!-- 19 -->
+<section class="slide">
+  <div class="kicker">Savjeti</div>
+  <h2>Ako zapne</h2>
+  <div class="cols-2">
+    <div>
+      <div class="file">query parametri (nivo 3)</div>
+<pre class="xs"><span class="c">// /knjige?od=1950&amp;do=1970</span>
+req.query  <span class="c">// { od: "1950", do: "1970" }</span></pre>
+      <p class="small muted" style="margin-top:10px">Opet stringovi. <code>do</code> je rezervisana riječ, zato <code>req.query.do</code>, ali ne <code>const do</code>.</p>
+      <div class="file" style="margin-top:20px">bez ponavljanja (nivo 1)</div>
+<pre class="xs">[...<span class="k">new</span> Set([<span class="s">"a"</span>, <span class="s">"b"</span>, <span class="s">"a"</span>])]  <span class="c">// ["a", "b"]</span></pre>
+    </div>
+    <div>
+      <div class="file">brojanje (nivo 4)</div>
+<pre class="xs"><span class="k">const</span> brojac = {};
+brojac[<span class="s">"roman"</span>] = (brojac[<span class="s">"roman"</span>] || <span class="s">0</span>) + <span class="s">1</span>;</pre>
+      <div class="note small" style="margin-top:20px">Nivo 1 i 4 su statične rute. Gdje moraju stajati?</div>
+    </div>
+  </div>
+</section>
+
+<!-- 20 -->
+<section class="slide title">
+  <div class="kicker">Sljedeće · V_04</div>
+  <h1>Stranice za knjige</h1>
+  <p class="lead">Umjesto JSON-a, prava HTML stranica: lista knjiga i stranica za svaku knjigu.</p>
+</section>
+
+</main>
+<script src="../_tema/slides.js"></script>
+</body>
+</html>
