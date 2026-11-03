@@ -1,5 +1,7 @@
 # V_03 · Šta je urađeno u projektu
 
+Stanje: tag `v03` (kod sa časa i rješenje zadatka 3).
+
 ## Promjene
 
 | Fajl | Šta se promijenilo |
@@ -15,6 +17,20 @@
 | `/knjige/broj` | statična | `{ "broj": 5 }` |
 | `/knjige/nasumicna` | statična | jednu nasumičnu knjigu |
 | `/knjige/:id` | dinamička | knjigu po id-u, a 404 ako ne postoji |
+
+## Rješenje zadatka 3
+
+Sve je u `routes/knjige.js`.
+
+| Nivo | Adresa | Kako radi |
+|---|---|---|
+| 1 | `/knjige/autori` | `map` uzme autore, `[...new Set(...)]` izbaci ponavljanja |
+| 2 | `/knjige/zanr/:zanr` | `filter` po žanru (sa `toLowerCase`, pa radi i `Roman`); prazan rezultat daje 404 |
+| 3 | `/knjige?od=1950&do=1970` | ista ruta `"/"`, čita `req.query.od` i `req.query.do`; bez parametara vraća sve; ako nisu brojevi, 400 |
+| 4 | `/knjige/statistika` | prazan objekat, pa za svaku knjigu `poZanru[k.zanr] = (poZanru[k.zanr] \|\| 0) + 1` |
+| Bonus | `/knjige/nasumicna/:broj` | kopija niza `[...knjige]`, izmiješa se, `slice(0, broj)`; broj manji od 1 ili nije cijeli: 400 |
+
+Statične rute (`/autori`, `/statistika`) su **iznad** `/:id`. Rute sa dva dijela (`/zanr/:zanr`, `/nasumicna/:broj`) se ne sudaraju sa `/:id`.
 
 ## Šta smo naučili
 
@@ -34,4 +50,4 @@ npm run dev
 
 ## Sljedeće
 
-Zadatak 3: `zadatak_03.md` u ovom folderu. Na sljedećim vježbama: paket `slugify` i adrese po naslovu (`/knjige/naslov/dervis-i-smrt`), pa HTML stranice za knjige.
+Na sljedećim vježbama: paket `slugify` i adrese po naslovu (`/knjige/naslov/dervis-i-smrt`), pa HTML stranice za knjige.
