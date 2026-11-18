@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPKN · Vježbe 4</title>
+<link rel="stylesheet" href="../_tema/slides.css">
+<style>
+  .halves { display:grid; grid-template-columns:1fr 1fr; gap:32px; margin-top:20px; }
+  .halves .card { padding:34px 36px; }
+  .halves .big { font-size:22px; font-weight:800; letter-spacing:.12em; color:var(--accent-2); }
+  .kviz { display:flex; flex-direction:column; justify-content:center; }
+  .kviz .q { font-family:var(--mono); font-size:34px; background:#fff; border:1px solid var(--line); border-radius:18px; padding:28px 40px; margin:10px 0 36px; }
+  .opts { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .opts .card { font-size:24px; padding:28px; }
+  .opts .card b { display:block; font-size:34px; color:var(--accent-2); margin-bottom:6px; }
+  .opts code { font-size:22px; }
+  pre.sm { font-size:21px; }
+  pre.xs { font-size:19px; }
+  .vs { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  .vs .lbl { font-size:18px; font-weight:800; letter-spacing:.12em; color:var(--muted); margin-bottom:8px; }
+  .todo td:first-child { font-weight:800; color:var(--accent-2); width:160px; white-space:nowrap; }
+  .diagram text { font-variant-ligatures:none; }
+</style>
+</head>
+<body data-title="OPKN · Vježbe 4 · Stranice za knjige">
+<main class="deck">
+
+<!-- 1 -->
+<section class="slide title">
+  <div class="kicker">Odabrana poglavlja kompjuterskih nauka · Vježbe 4</div>
+  <h1>Stranice za knjige</h1>
+  <p class="lead">Od JSON-a do prave HTML stranice.</p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <div class="kicker">Danas</div>
+  <h2>Prvi sat čitamo kod, drugi sat ga pišete</h2>
+  <div class="halves">
+    <div class="card blue">
+      <div class="big">PRVI SAT</div>
+      <ul class="small" style="margin-top:14px">
+        <li>moderni JavaScript</li>
+        <li>slug: knjiga po naslovu</li>
+        <li>API i stranice</li>
+        <li>EJS šabloni i dijelovi stranice</li>
+      </ul>
+    </div>
+    <div class="card green">
+      <div class="big">DRUGI SAT</div>
+      <ul class="small" style="margin-top:14px">
+        <li>TODO u kodu</li>
+        <li>stranica knjige, link, 404, statistika</li>
+      </ul>
+    </div>
+  </div>
+<pre class="term xs" style="margin-top:30px"><span class="p">&gt;</span> git pull
+<span class="p">&gt;</span> npm install</pre>
+</section>
+
+<!-- 3 -->
+<section class="slide section">
+  <div class="big-num">01</div>
+  <div class="kicker">Dio prvi</div>
+  <h1>Moderni JavaScript</h1>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <div class="kicker">const, let, template string</div>
+  <h2>Ono što ste već vidjeli u kodu</h2>
+  <div class="vs">
+    <div>
+      <div class="lbl">STARO</div>
+<pre class="sm"><span class="k">var</span> grad = <span class="s">"Sarajevo"</span>;
+
+<span class="s">"Knjiga "</span> + k.naslov +
+  <span class="s">" ("</span> + k.godina + <span class="s">")"</span></pre>
+    </div>
+    <div>
+      <div class="lbl">NOVO</div>
+<pre class="sm"><span class="k">const</span> grad = <span class="s">"Sarajevo"</span>;
+<span class="k">let</span> brojac = <span class="s">0</span>;
+
+<span class="s">`Knjiga ${k.naslov} (${k.godina})`</span></pre>
+    </div>
+  </div>
+  <p class="small muted" style="margin-top:24px"><code>const</code> se ne može ponovo dodijeliti, <code>let</code> može. <code>var</code> više ne pišemo.</p>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <div class="kicker">Arrow funkcije</div>
+  <h2>Ista funkcija, kraće</h2>
+  <div class="vs">
+    <div>
+      <div class="lbl">STARO</div>
+<pre class="sm"><span class="k">function</span> (k) {
+  <span class="k">return</span> k.id === <span class="s">2</span>;
+}</pre>
+    </div>
+    <div>
+      <div class="lbl">NOVO</div>
+<pre class="sm">(k) =&gt; k.id === <span class="s">2</span></pre>
+    </div>
+  </div>
+  <p class="small muted" style="margin-top:24px">Bez <code>{}</code> vrijednost se vraća sama. Sa <code>{}</code> treba <code>return</code>.</p>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <div class="kicker">Metode niza</div>
+  <h2>Četiri metode koje stalno koristimo</h2>
+  <svg class="diagram grow" viewBox="0 0 1380 440">
+    <g font-family="JetBrains Mono, monospace" font-size="22">
+      <text x="40" y="50" font-weight="700" fill="#2f5d50">knjige</text>
+      <g>
+        <rect x="160" y="22" width="140" height="44" rx="10" fill="#e8efe9" stroke="#cfdcd2"/><text x="230" y="51" text-anchor="middle">1945</text>
+        <rect x="310" y="22" width="140" height="44" rx="10" fill="#e8efe9" stroke="#cfdcd2"/><text x="380" y="51" text-anchor="middle">1966</text>
+        <rect x="460" y="22" width="140" height="44" rx="10" fill="#e8efe9" stroke="#cfdcd2"/><text x="530" y="51" text-anchor="middle">1954</text>
+        <rect x="610" y="22" width="140" height="44" rx="10" fill="#e8efe9" stroke="#cfdcd2"/><text x="680" y="51" text-anchor="middle">1970</text>
+      </g>
+
+      <text x="40" y="140" fill="#3c5a9a" font-weight="700">find</text>
+      <text x="160" y="140">(k) =&gt; k.godina &gt; 1950</text>
+      <rect x="800" y="112" width="140" height="44" rx="10" fill="#f7ebe0" stroke="#ecd6c2"/><text x="870" y="141" text-anchor="middle">1966</text>
+      <text x="970" y="141" fill="#5d6677" font-family="Inter, sans-serif">prvi koji odgovara</text>
+
+      <text x="40" y="230" fill="#3c5a9a" font-weight="700">filter</text>
+      <text x="160" y="230">(k) =&gt; k.godina &gt; 1950</text>
+      <text x="800" y="231" font-size="30" fill="#9a5326">[</text>
+      <rect x="820" y="202" width="110" height="44" rx="10" fill="#f7ebe0" stroke="#ecd6c2"/><text x="875" y="231" text-anchor="middle">1966</text>
+      <rect x="940" y="202" width="110" height="44" rx="10" fill="#f7ebe0" stroke="#ecd6c2"/><text x="995" y="231" text-anchor="middle">1954</text>
+      <rect x="1060" y="202" width="110" height="44" rx="10" fill="#f7ebe0" stroke="#ecd6c2"/><text x="1115" y="231" text-anchor="middle">1970</text>
+      <text x="1180" y="231" font-size="30" fill="#9a5326">]</text>
+      <text x="1210" y="231" fill="#5d6677" font-family="Inter, sans-serif">svi</text>
+
+      <text x="40" y="320" fill="#3c5a9a" font-weight="700">map</text>
+      <text x="160" y="320">(k) =&gt; k.godina &gt; 1950</text>
+      <text x="800" y="321"><tspan fill="#9a5326">[</tspan> false, true, true, true <tspan fill="#9a5326">]</tspan><tspan dx="30" fill="#5d6677" font-family="Inter, sans-serif">isto dugačak</tspan></text>
+
+      <text x="40" y="410" fill="#3c5a9a" font-weight="700">forEach</text>
+      <text x="160" y="410">(k) =&gt; console.log(k.godina)</text>
+      <text x="800" y="411" fill="#5d6677" font-family="Inter, sans-serif">ne vraća ništa, samo prođe kroz niz</text>
+    </g>
+  </svg>
+</section>
+
+<!-- 7 -->
+<section class="slide kviz">
+  <div class="kicker">Kviz 1</div>
+  <h2>Šta je rezultat?</h2>
+  <div class="q">knjige.filter((k) =&gt; k.godina &gt; 2000)</div>
+  <div class="opts">
+    <div class="card"><b>A</b><code>undefined</code></div>
+    <div class="card"><b>B</b><code>[]</code></div>
+    <div class="card"><b>C</b>greška</div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide kviz">
+  <div class="kicker">Kviz 2</div>
+  <h2>A ovo?</h2>
+  <div class="q">knjige.find((k) =&gt; k.id === 99).naslov</div>
+  <div class="opts">
+    <div class="card"><b>A</b><code>undefined</code></div>
+    <div class="card"><b>B</b><code>""</code></div>
+    <div class="card"><b>C</b>greška</div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="kicker">Još tri sitnice</div>
+  <h2>Spread, destrukturiranje, skraćeni objekat</h2>
+<pre class="sm"><span class="k">const</span> kopija = [...knjige];
+<span class="k">const</span> autori = [...<span class="k">new</span> Set(knjige.map((k) =&gt; k.autor))];
+
+<span class="k">const</span> { naslov, autor } = knjiga;     <span class="c">// const naslov = knjiga.naslov; ...</span>
+<span class="k">const</span> { id } = req.params;
+
+res.render(<span class="s">"knjige/lista"</span>, { knjige });  <span class="c">// isto kao { knjige: knjige }</span></pre>
+<pre class="term xs" style="margin-top:24px"><span class="p">&gt;</span> node materijali/v_04/moderni_js.js</pre>
+</section>
+
+<!-- 10 -->
+<section class="slide section">
+  <div class="big-num">02</div>
+  <div class="kicker">Dio drugi</div>
+  <h1>Slug</h1>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <div class="kicker">Slug</div>
+  <h2>Lijepa adresa umjesto broja</h2>
+  <table class="compact">
+    <tr><th>Naslov</th><th>U adresi bez sluga</th><th>Slug</th></tr>
+    <tr><td>Derviš i smrt</td><td><code>Dervi%C5%A1%20i%20smrt</code></td><td><code>dervis-i-smrt</code></td></tr>
+    <tr><td>Na Drini ćuprija</td><td><code>Na%20Drini%20%C4%87uprija</code></td><td><code>na-drini-cuprija</code></td></tr>
+    <tr><td>Tvrđava</td><td><code>Tvr%C4%91ava</code></td><td><code>tvrdjava</code></td></tr>
+  </table>
+  <div class="cols-2" style="margin-top:30px">
+    <div class="note green"><b>Slug</b>: mala slova, bez razmaka i bez č, ć, š, ž, đ. Riječi spojene crticom.</div>
+    <div class="note">Isto rade pravi sajtovi: <code>/vijesti/novi-most-u-sarajevu</code>, a ne <code>/vijesti/48213</code>.</div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <div class="kicker">routes/knjige.js</div>
+  <h2>Ruta /naslov/:slug</h2>
+  <div class="row">
+<pre class="xs" style="flex:1.5"><span class="k">const</span> slugify = require(<span class="s">"slugify"</span>);
+
+<span class="k">function</span> napraviSlug(naslov) {
+  <span class="k">return</span> slugify(naslov, { lower: <span class="k">true</span>, strict: <span class="k">true</span> });
+}
+
+router.get(<span class="s">"/naslov/:slug"</span>, <span class="k">function</span> (req, res) {
+  <span class="k">const</span> knjiga = knjige.find(
+    (k) =&gt; napraviSlug(k.naslov) === req.params.slug);
+
+  <span class="k">if</span> (!knjiga) {
+    <span class="k">return</span> res.status(<span class="s">404</span>).json({ greska: <span class="s">"..."</span> });
+  }
+  res.json(knjiga);
+});</pre>
+    <div>
+<pre class="term xs"><span class="p">&gt;</span> npm install slugify</pre>
+      <ol class="steps small" style="margin-top:20px">
+        <li>iz adrese: <code>"dervis-i-smrt"</code></li>
+        <li>za svaku knjigu napravi slug naslova</li>
+        <li>vrati onu čiji se slug poklapa</li>
+      </ol>
+      <p class="small muted" style="margin-top:16px">Gdje stoji? Iznad <code>/:id</code>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide section">
+  <div class="big-num">03</div>
+  <div class="kicker">Dio treći</div>
+  <h1>API i stranice</h1>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <div class="kicker">Isti podaci, dva oblika</div>
+  <h2>Za programe JSON, za ljude HTML</h2>
+  <svg class="diagram grow" viewBox="0 0 1380 400">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f5d50"/></marker></defs>
+    <g font-size="22">
+      <rect x="520" y="20" width="340" height="80" rx="18" fill="#fff" stroke="#e2ddd1" stroke-width="2"/>
+      <text x="690" y="70" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700">data/knjige.js</text>
+
+      <line x1="620" y1="104" x2="360" y2="170" stroke="#2f5d50" stroke-width="3" marker-end="url(#ar)"/>
+      <line x1="760" y1="104" x2="1020" y2="170" stroke="#2f5d50" stroke-width="3" marker-end="url(#ar)"/>
+
+      <rect x="80" y="175" width="520" height="190" rx="18" fill="#eef1f8" stroke="#d3daeb" stroke-width="2"/>
+      <text x="340" y="220" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" fill="#3c5a9a">/api/knjige</text>
+      <text x="340" y="258" text-anchor="middle" font-family="JetBrains Mono, monospace">routes/knjige.js</text>
+      <text x="340" y="296" text-anchor="middle" font-family="JetBrains Mono, monospace" fill="#3c5a9a">res.json(...)</text>
+      <text x="340" y="340" text-anchor="middle" fill="#5d6677">mobilna aplikacija, drugi program</text>
+
+      <rect x="780" y="175" width="520" height="190" rx="18" fill="#e8efe9" stroke="#cfdcd2" stroke-width="2"/>
+      <text x="1040" y="220" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" fill="#2f5d50">/knjige</text>
+      <text x="1040" y="258" text-anchor="middle" font-family="JetBrains Mono, monospace">routes/knjigeStranice.js</text>
+      <text x="1040" y="296" text-anchor="middle" font-family="JetBrains Mono, monospace" fill="#2f5d50">res.render(...)</text>
+      <text x="1040" y="340" text-anchor="middle" fill="#5d6677">čovjek u browseru</text>
+    </g>
+  </svg>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <div class="kicker">app.js</div>
+  <h2>Dva routera, dva prefiksa</h2>
+<pre class="sm"><span class="k">const</span> knjigeRouter = require(<span class="s">"./routes/knjige"</span>);
+<span class="k">const</span> knjigeStraniceRouter = require(<span class="s">"./routes/knjigeStranice"</span>);
+
+app.use(<span class="s">"/api/knjige"</span>, knjigeRouter);        <span class="c">// JSON</span>
+app.use(<span class="s">"/knjige"</span>, knjigeStraniceRouter);   <span class="c">// HTML</span></pre>
+<pre class="sm" style="margin-top:24px"><span class="c">// routes/knjigeStranice.js</span>
+router.get(<span class="s">"/"</span>, <span class="k">function</span> (req, res) {
+  res.render(<span class="s">"knjige/lista"</span>, { naslov: <span class="s">"Knjige"</span>, aktivna: <span class="s">"knjige"</span>, knjige: knjige });
+});</pre>
+</section>
+
+<!-- 16 -->
+<section class="slide section">
+  <div class="big-num">04</div>
+  <div class="kicker">Dio četvrti</div>
+  <h1>EJS</h1>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <div class="kicker">EJS oznake</div>
+  <h2>Četiri oznake, to je sve</h2>
+  <table class="compact">
+    <tr><th>Oznaka</th><th>Šta radi</th><th>Primjer</th></tr>
+    <tr><td><code>&lt;%= %&gt;</code></td><td>ispiše vrijednost</td><td><code>&lt;%= knjiga.naslov %&gt;</code></td></tr>
+    <tr><td><code>&lt;% %&gt;</code></td><td>JavaScript, bez ispisa</td><td><code>&lt;% if (...) { %&gt;</code></td></tr>
+    <tr><td><code>&lt;%- %&gt;</code></td><td>ubaci HTML bez zaštite</td><td><code>&lt;%- include("...") %&gt;</code></td></tr>
+    <tr><td><code>&lt;%# %&gt;</code></td><td>komentar, ne stiže do browsera</td><td><code>&lt;%# TODO %&gt;</code></td></tr>
+  </table>
+</section>
+
+<!-- 18 -->
+<section class="slide kviz">
+  <div class="kicker">Kviz 3</div>
+  <h2>Šta se vidi na stranici?</h2>
+  <div class="q">&lt;%= "&lt;b&gt;Derviš&lt;/b&gt;" %&gt;</div>
+  <div class="opts">
+    <div class="card"><b>A</b><strong>Derviš</strong> podebljano</div>
+    <div class="card"><b>B</b><code>&lt;b&gt;Derviš&lt;/b&gt;</code></div>
+    <div class="card"><b>C</b>ništa</div>
+  </div>
+</section>
+
+<!-- 19 -->
+<section class="slide">
+  <div class="kicker">Partials</div>
+  <h2>Zaglavlje i podnožje pišemo jednom</h2>
+  <div class="row" style="align-items:center">
+    <svg class="diagram" viewBox="0 0 560 420" style="flex:1">
+      <g font-family="JetBrains Mono, monospace" font-size="20">
+        <rect x="20" y="10" width="520" height="90" rx="14" fill="#e8efe9" stroke="#cfdcd2" stroke-width="2"/>
+        <text x="280" y="50" text-anchor="middle" font-weight="700" fill="#2f5d50">partials/zaglavlje.ejs</text>
+        <text x="280" y="80" text-anchor="middle" fill="#5d6677" font-family="Inter, sans-serif">head, navigacija</text>
+        <rect x="20" y="115" width="520" height="190" rx="14" fill="#fff" stroke="#e2ddd1" stroke-width="2" stroke-dasharray="8 6"/>
+        <text x="280" y="205" text-anchor="middle" font-weight="700">knjige/lista.ejs</text>
+        <text x="280" y="238" text-anchor="middle" fill="#5d6677" font-family="Inter, sans-serif">samo ono što je posebno</text>
+        <rect x="20" y="320" width="520" height="90" rx="14" fill="#e8efe9" stroke="#cfdcd2" stroke-width="2"/>
+        <text x="280" y="360" text-anchor="middle" font-weight="700" fill="#2f5d50">partials/podnozje.ejs</text>
+        <text x="280" y="390" text-anchor="middle" fill="#5d6677" font-family="Inter, sans-serif">footer, kraj stranice</text>
+      </g>
+    </svg>
+<pre class="xs" style="flex:1.1">&lt;%- include(<span class="s">"../partials/zaglavlje"</span>) %&gt;
+
+&lt;h1&gt;Knjige&lt;/h1&gt;
+...
+
+&lt;%- include(<span class="s">"../partials/podnozje"</span>) %&gt;</pre>
+  </div>
+</section>
+
+<!-- 20 -->
+<section class="slide">
+  <div class="kicker">views/knjige/lista.ejs</div>
+  <h2>if i forEach u šablonu</h2>
+<pre class="xs">&lt;% <span class="k">if</span> (knjige.length === <span class="s">0</span>) { %&gt;
+  &lt;p&gt;U biblioteci trenutno nema knjiga.&lt;/p&gt;
+&lt;% } <span class="k">else</span> { %&gt;
+  &lt;table class=<span class="s">"tabela"</span>&gt;
+    &lt;% knjige.forEach((knjiga) =&gt; { %&gt;
+      &lt;tr&gt;
+        &lt;td&gt;&lt;%= knjiga.naslov %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= knjiga.autor %&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;% }) %&gt;
+  &lt;/table&gt;
+&lt;% } %&gt;</pre>
+  <p class="small muted" style="margin-top:20px"><code>knjige</code> u šablonu je ono što je ruta poslala u <code>res.render(..., { knjige })</code>.</p>
+</section>
+
+<!-- 21 -->
+<section class="slide section">
+  <div class="big-num">05</div>
+  <div class="kicker">Dio peti</div>
+  <h1>Vaš red</h1>
+</section>
+
+<!-- 22 -->
+<section class="slide">
+  <div class="kicker">Zadatak 4</div>
+  <h2>TODO u kodu</h2>
+  <table class="compact todo">
+    <tr><th>TODO</th><th>Šta</th></tr>
+    <tr><td>1</td><td>ruta za stranicu jedne knjige <code>/knjige/:id</code></td></tr>
+    <tr><td>2</td><td>stranica sa podacima o knjizi</td></tr>
+    <tr><td>3</td><td>link na stranicu knjige</td></tr>
+    <tr><td>4</td><td>stranica „knjiga ne postoji“</td></tr>
+    <tr><td>5 bonus</td><td>aktivni link u navigaciji</td></tr>
+    <tr><td>6</td><td>stranica sa statistikom <code>/knjige/statistika</code></td></tr>
+  </table>
+  <div class="cols-2" style="margin-top:24px">
+    <p class="small muted"><code>Ctrl + Shift + F</code> → <code>TODO</code>. Detalji: <code>materijali/v_04/TODO.md</code></p>
+    <div class="note small">U TODO 6 krije se jedna greškica.</div>
+  </div>
+</section>
+
+<!-- 23 -->
+<section class="slide title">
+  <div class="kicker">Sljedeće · V_05</div>
+  <h1>Red u kodu</h1>
+  <p class="lead">Isti kod na dva mjesta? Uvodimo MVC.</p>
+</section>
+
+</main>
+<script src="../_tema/slides.js"></script>
+</body>
+</html>

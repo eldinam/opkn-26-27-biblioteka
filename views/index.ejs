@@ -1,24 +1,18 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8' />
-    <title><%= naslov %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= naslov %></h1>
-    <p class="datum"><%= datum %></p>
-    <p>Katalog knjiga naše biblioteke. U biblioteci je trenutno <strong><%= brojKnjiga %></strong> knjiga.</p>
+<%- include("partials/zaglavlje") %>
 
-    <section class="kartica">
-      <h2>Preporuka dana</h2>
-      <p><strong><%= preporuka.naslov %></strong>, <%= preporuka.autor %> (<%= preporuka.godina %>)</p>
-      <p class="datum">Od izdanja je prošlo <%= prijeGodina %> god.</p>
-    </section>
+<h1><%= naslov %></h1>
+<p class="datum"><%= datum %></p>
+<p>Katalog knjiga naše biblioteke. U biblioteci je trenutno <strong><%= brojKnjiga %></strong> knjiga. <a href="/knjige">Pogledaj sve knjige</a></p>
 
-    <section class="kartica">
-      <h2>Zanimljivost dana</h2>
-      <p><%= zanimljivost %></p>
-    </section>
-  </body>
-</html>
+<section class="kartica">
+  <h2>Preporuka dana</h2>
+  <p><strong><%= preporuka.naslov %></strong>, <%= preporuka.autor %> (<%= preporuka.godina %>)</p>
+  <p class="datum">Od izdanja je prošlo <%= prijeGodina %> god.</p>
+</section>
+
+<section class="kartica">
+  <h2>Zanimljivost dana</h2>
+  <p><%= zanimljivost %></p>
+</section>
+
+<%- include("partials/podnozje") %>

@@ -1,0 +1,28 @@
+<%- include("../partials/zaglavlje") %>
+
+<h1>Knjige</h1>
+
+<% if (knjige.length === 0) { %>
+  <p>U biblioteci trenutno nema knjiga.</p>
+<% } else { %>
+  <p>Ukupno: <%= knjige.length %></p>
+
+  <table class="tabela">
+    <thead>
+      <tr><th>Naslov</th><th>Autor</th><th>Godina</th><th>Žanr</th></tr>
+    </thead>
+    <tbody>
+      <% knjige.forEach((knjiga) => { %>
+        <tr>
+          <%# TODO 3: link na stranicu knjige %>
+          <td><%= knjiga.naslov %></td>
+          <td><%= knjiga.autor %></td>
+          <td><%= knjiga.godina %></td>
+          <td><%= knjiga.zanr %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<%- include("../partials/podnozje") %>

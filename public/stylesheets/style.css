@@ -19,3 +19,50 @@ a {
   max-width: 600px;
   margin-bottom: 16px;
 }
+
+.navigacija {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  border-bottom: 1px solid #e2ddd1;
+  padding-bottom: 14px;
+  margin-bottom: 24px;
+}
+
+.navigacija a {
+  color: #555;
+  text-decoration: none;
+}
+
+.navigacija .logo {
+  font-weight: bold;
+  color: #2f5d50;
+  margin-right: auto;
+}
+
+.navigacija .aktivna {
+  color: #c8743a;
+  font-weight: bold;
+}
+
+.tabela {
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.tabela th,
+.tabela td {
+  text-align: left;
+  padding: 8px 14px;
+  border-bottom: 1px solid #e2ddd1;
+}
+
+.tabela th {
+  color: #777;
+}
+
+.podnozje {
+  margin-top: 40px;
+  color: #999;
+  font-size: 12px;
+}

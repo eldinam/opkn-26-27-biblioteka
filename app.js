@@ -6,13 +6,14 @@ var logger = require("morgan");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
-const knjigeRouter = require("./routes/knjige");
+const knjigeRouter = require("./routes/knjige"); // JSON (API)
+const knjigeStraniceRouter = require("./routes/knjigeStranice"); // HTML stranice
 
 var app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
++app.set("view engine", "ejs");
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -22,7 +23,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/knjige", knjigeRouter);
+app.use("/api/knjige", knjigeRouter); // podaci za programe: JSON
+app.use("/knjige", knjigeStraniceRouter); // stranice za ljude: HTML
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
