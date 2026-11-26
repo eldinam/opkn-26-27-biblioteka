@@ -1,0 +1,21 @@
+<%- include("../partials/zaglavlje") %>
+
+<h1>Statistika</h1>
+<p>Ukupno knjiga: <%= ukupno %></p>
+
+<table class="tabela">
+  <thead>
+    <tr><th>Žanr</th><th>Broj knjiga</th></tr>
+  </thead>
+  <tbody>
+    <%# for...in prolazi kroz sve ključeve objekta: "roman", "novela", "balada" %>
+    <% for (const zanr in poZanru) { %>
+      <tr>
+        <td><%= zanr %></td>
+        <td><%= poZanru[zanr] %></td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<%- include("../partials/podnozje") %>

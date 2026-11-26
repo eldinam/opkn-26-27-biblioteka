@@ -14,8 +14,8 @@
     <tbody>
       <% knjige.forEach((knjiga) => { %>
         <tr>
-          <%# TODO 3: link na stranicu knjige %>
-          <td><%= knjiga.naslov %></td>
+          <%# TODO 3: naslov je link na stranicu knjige %>
+          <td><a href="/knjige/<%= knjiga.id %>"><%= knjiga.naslov %></a></td>
           <td><%= knjiga.autor %></td>
           <td><%= knjiga.godina %></td>
           <td><%= knjiga.zanr %></td>

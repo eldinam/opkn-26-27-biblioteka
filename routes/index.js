@@ -18,6 +18,7 @@ router.get("/", function (req, res, next) {
 
   res.render("index", {
     naslov: "Biblioteka PMF",
+    aktivna: "pocetna", // TODO 5 (bonus): za označen link u navigaciji
     datum: dayjs().format("dddd, D. MMMM YYYY."),
     zanimljivost: nasumicno(zanimljivosti),
     brojKnjiga: knjige.length,

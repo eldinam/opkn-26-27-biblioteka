@@ -8,9 +8,17 @@
   <body>
     <nav class="navigacija">
       <a href="/" class="logo">Biblioteka PMF</a>
-      <a href="/">Početna</a>
-      <a href="/knjige">Knjige</a>
+      <%# TODO 5 (bonus): ruta šalje "aktivna", a ovdje taj link dobije klasu "aktivna" %>
+      <% if (locals.aktivna === "pocetna") { %>
+        <a href="/" class="aktivna">Početna</a>
+      <% } else { %>
+        <a href="/">Početna</a>
+      <% } %>
+      <% if (locals.aktivna === "knjige") { %>
+        <a href="/knjige" class="aktivna">Knjige</a>
+      <% } else { %>
+        <a href="/knjige">Knjige</a>
+      <% } %>
       <a href="/api/knjige">API</a>
-      <%# TODO 5 (bonus): označiti aktivni link %>
     </nav>
     <main>

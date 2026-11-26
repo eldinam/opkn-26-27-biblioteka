@@ -1,1 +1,13 @@
-<%# TODO 2: stranica sa podacima o knjizi %>
+<%- include("../partials/zaglavlje") %>
+
+<p><a href="/knjige">← Sve knjige</a></p>
+
+<h1><%= knjiga.naslov %></h1>
+
+<section class="kartica">
+  <p><strong>Autor:</strong> <%= knjiga.autor %></p>
+  <p><strong>Godina:</strong> <%= knjiga.godina %></p>
+  <p><strong>Žanr:</strong> <%= knjiga.zanr %></p>
+</section>
+
+<%- include("../partials/podnozje") %>
